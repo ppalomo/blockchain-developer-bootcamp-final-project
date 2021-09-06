@@ -1,7 +1,11 @@
-# Project Idea `Pablo Palomo`
-**A Special NFT marketplace with rewards**
+# Rewarded NFTs Marketplace
+**Project Idea `Pablo Palomo`**
 
-???????
+The project consists of the creation of an ERC-721 contract that will send the collected amount of minting NFTs to stake. This way, every month, generated interests will be shared through NFT owners. But... how?
+
+User will mine assets of two types depending on how lucky they are:
+1. **Standard NFTs** These are normal NFT images randomnly generated without extra capabilities.
+2. **Special NFTs** These are rare an unusual NFTs with some interesting capabilities. A random weight between 1 and 1000 which means the percentage of interests that can be withdrawn every month.
 
 **Workflow:** 
 1. A user mints a new NFT which is generated randomly.
