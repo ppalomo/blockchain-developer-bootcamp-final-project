@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -89,6 +89,9 @@ contract Plasmids is ERC721, ERC721URIStorage, Ownable {
     function setFactory(address _addr) external onlyOwner {
         require(_addr != address(0), 'Address is not correct');
         factory = _addr;
+
+        // Emiting event
+        // ????????????????????????????????????????????????????
     }
 
     // Private methods

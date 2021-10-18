@@ -73,10 +73,10 @@ export default function Home (props) {
 
                     console.log("dna generated!")
                     
-                    // const tx2 = await factoryContract.mintNFT(imageURI,metadataURI, {value: mintingPrice.toString()});
-                    // await tx2.wait();
+                    const tx2 = await factoryContract.mintNFT(imageURI,metadataURI, {value: mintingPrice.toString()});
+                    await tx2.wait();
 
-                    // console.log("nft minted!")
+                    console.log("nft minted!")
 
                     fetchData();
                 }
@@ -160,7 +160,7 @@ export default function Home (props) {
 
                 {/* <Progress hasStripe value={totalSupply} w="60%" h="20px" max={maxSupply} /> */}
 
-                {/* <Button 
+                <Button 
                     isDisabled={!isWalletConnected}
                     onClick={() => handleMinting() }
                     w="33%"
@@ -168,7 +168,7 @@ export default function Home (props) {
                     colorScheme="blue"
                     variant="outline">
                         Mint
-                </Button> */}
+                </Button>
 
                 <Canvas mintingPrice={mintingPrice} />
                 

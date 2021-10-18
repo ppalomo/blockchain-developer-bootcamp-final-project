@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { ethers, utils } from 'ethers';
 import p5 from 'p5';
 import {
     Button,
@@ -105,34 +106,35 @@ export default function Canvas (props) {
         setSketch(new p5(calculateImage, 'canvas'))
     }, [dna]);
 
-    async function handleMinting(e) {
-        let imageURI = "https://ipfs.io/ipfs/QmWNcYhEcggdm1TFt2m6WmGqqQwfFXudr5eFzKPtm1nYwq";
-        let metadataURI = "https://ipfs.io/ipfs/QmUCxDBKCrx2JXV4ZNYLwhUPXqTvRAu6Zceoh1FNVumoec";
+    // async function handleMinting(e) {
+    //     let imageURI = "https://ipfs.io/ipfs/QmWNcYhEcggdm1TFt2m6WmGqqQwfFXudr5eFzKPtm1nYwq";
+    //     let metadataURI = "https://ipfs.io/ipfs/QmUCxDBKCrx2JXV4ZNYLwhUPXqTvRAu6Zceoh1FNVumoec";
 
-        if (isWalletConnected)
-        {
-            try {
-                if(factoryContract != null) {    
-                    console.log(factoryContract);          
-                    const tx = await factoryContract.getRandomDna();
-                    const result = await tx.wait();
+    //     if (isWalletConnected)
+    //     {
+    //         try {
+    //             if(factoryContract != null) {    
+    //                 console.log(factoryContract);          
+    //                 let tx = await factoryContract.getRandomDna();
+    //                 const result = await tx.wait();
                     
-                    const dna = result.events[0].args[1];
-                    console.log(dna);
-                    console.log("dna generated!")
-                    
-                    const tx2 = await factoryContract.mintNFT(imageURI,metadataURI, {value: props.mintingPrice.toString()});
-                    await tx2.wait();
+    //                 const dna = result.events[0].args[1];
+    //                 console.log(dna);
+    //                 console.log("dna generated!")
+    //                 console.log(props.mintingPrice.toString());
 
-                    console.log("nft minted!")
+    //                 tx = await factoryContract.mintNFT(imageURI, metadataURI, {value: mintingPrice.toString()});
+    //                 // await tx2.wait();
 
-            //         fetchData();
-                }
-            } catch (err) {
-                console.log("Error: ", err);
-            }
-        }
-    }
+    //                 console.log("nft minted!")
+
+    //         //         fetchData();
+    //             }
+    //         } catch (err) {
+    //             console.log("Error: ", err);
+    //         }
+    //     }
+    // }
 
     const calculateImage = (s) => {
         
@@ -255,7 +257,7 @@ export default function Canvas (props) {
 
             <p>{props.mintingPrice}</p>
 
-            <Button 
+            {/* <Button 
                 isDisabled={!isWalletConnected}
                 onClick={() => handleMinting() }
                 w="100px"
@@ -263,7 +265,7 @@ export default function Canvas (props) {
                 colorScheme="blue"
                 variant="outline">
                     Mint
-            </Button>
+            </Button> */}
 
             <Button 
                 onClick={() => handleGenerate() }

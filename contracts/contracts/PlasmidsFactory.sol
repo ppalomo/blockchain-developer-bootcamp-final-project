@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./interfaces/IPlasmids.sol";
+// import "./interfaces/IPlasmidsFactory.sol";
 import "./interfaces/IStakingAdapter.sol";
 import "hardhat/console.sol";
 
@@ -438,33 +439,6 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
     }
 
 }
-
-
-// Se hace un withdraw cada mes. Los usuarios con nft especiales pueden retirar su parte cada mes antes que se haga el siguiente withdraw.
-// Poner 'require' en el withdraw. No se puede realizar antes de que pase un mes desde el anterior.
-
-// El yield (unclaimed) que no se haya retirado a tiempo se enviará a caridad.
-
-// Al hacer un mint se añade el nuevo nft a UserInfo del usuario y se recalculan los pesos. Una opción es hacer un redeem automático al hacer mint.
-// Otra opción sería sumar el peso del nuevo nft siempre que el bloque del nft sea menor al bloque del withdraw.
-
-// Al hacer redeem se debe guardar el bloque y transferimos el pago. Solo se permite hacer redeem si el bloque del último redeem es menor que el bloque del withdraw.
-
-// Los nft irán incrementando su peso en 10 cada vez que se haga un redeem. 
-// El recalculo del peso del user y del peso de los NFT se realizará al hacer un redeem.
-// El weight total del usuario será igual a la suma de los pesos de sus nft
-// --> Cuando se transfiera un nft se recalcularán los pesos restando el peso del nft transferido. El nuevo owner tendrá un nft con el peso por defecto.
-
-// Al transferir un NFT, se debe guardar la info del user y del nft en "users" y actualizar la info del owner anterior.
-
-/**
-Tests:
--> Redeem con un solo nft
-- Cannot redeem if I don't have nfts or I have nfts not special or with weight 0.
-- No se puede hacer redeem si no se ha hecho un primer withdraw o el yield es 0.
--> No se puede hacer un redeem si se ha hecho ya previamente en el mes actual.
- */
-
 
  /**
  Pending:

@@ -9,6 +9,8 @@ require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 async function main() {
   let maxSupply = 100;
   let mintingPrice = ethers.utils.parseEther('0.05');
+  
+  let wallet = new ethers.Wallet(process.env.REACT_APP_DEPLOYER_PRIVATE_KEY)
 
   // Plasmids (ERC721 NFT Token)
   const Plasmids = await hre.ethers.getContractFactory("Plasmids");
@@ -33,10 +35,13 @@ async function main() {
 
   // LotteryPoolFactory
   const PlasmidsFactory = await hre.ethers.getContractFactory("PlasmidsFactory");
-  const factory = await PlasmidsFactory.deploy(nft.address, maxSupply, mintingPrice, stakingAdapter.address);  
+  const factory = await PlasmidsFactory.deploy(nft.address, maxSupply, mintingPrice, stakingAdapter.address, wallet.address);  
   await factory.deployed();
   await replaceContractAddress("PlasmidsFactory", factory.address);
   console.log("PlasmidsFactory deployed to:", factory.address);
+
+
+  await nft.setFactory(factory.address);
 
 }
 
