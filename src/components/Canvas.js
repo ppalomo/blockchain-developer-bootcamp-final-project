@@ -17,8 +17,8 @@ export default function Canvas (props) {
     const { isWalletConnected } = useStore();    
     const factoryContract = useContract("PlasmidsFactory");
 
-    const canvasWidth=700;
-    const canvasHeight=700;
+    const canvasWidth=1200;
+    const canvasHeight=1200;
     let cells = 22;
     let cellWidth = canvasWidth/cells;
     let rows = canvasHeight/cells;

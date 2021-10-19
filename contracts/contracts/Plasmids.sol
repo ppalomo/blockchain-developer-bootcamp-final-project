@@ -7,6 +7,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./interfaces/IPlasmidsFactory.sol";
 import "hardhat/console.sol";
 
+/**
+ @title Plasmids ERC-721 standard.
+ */
 contract Plasmids is ERC721, ERC721URIStorage, Ownable {
 
     // Structs
@@ -21,7 +24,8 @@ contract Plasmids is ERC721, ERC721URIStorage, Ownable {
     address public factory;
     NFT[] public nfts;
 
-    // Events  
+    // Events
+    event FactoryChanged(address indexed addr);
 
     /**
      @notice Contract constructor method.
@@ -91,7 +95,7 @@ contract Plasmids is ERC721, ERC721URIStorage, Ownable {
         factory = _addr;
 
         // Emiting event
-        // ????????????????????????????????????????????????????
+        emit FactoryChanged(_addr);
     }
 
     // Private methods
@@ -104,6 +108,9 @@ contract Plasmids is ERC721, ERC721URIStorage, Ownable {
         super._burn(tokenId);
     }
 
+    /**
+     @notice Before transfer function.
+     */
     function _beforeTokenTransfer(
         address from,
         address to,
