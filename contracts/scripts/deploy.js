@@ -110,3 +110,7 @@ main()
     console.error(error);
     process.exit(1);
   });
+
+// npx hardhat clean && npx hardhat verify --network kovan 0xca33691ed3ABf1b36123977b2F1E0f7ef94808c7
+// npx hardhat clean && npx hardhat verify --network kovan 0x4c049E8162B04118E0BfbfA10Bb14e0D5A416eb5 0x88757f2f99175387ab4c6a4b3067c77a695b0349 0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70 0x87b1f4cf9BD63f7BBD3eE1aD04E8F52540349347
+// npx hardhat clean && npx hardhat verify --network kovan 0x0727C025dFb7329Beb4636c85aaf76367556B806 0xca33691ed3ABf1b36123977b2F1E0f7ef94808c7 100 50000000000000000 0x4c049E8162B04118E0BfbfA10Bb14e0D5A416eb5 0xDaf3E0F6639776617b8fb1BE07b614aB93Bf19a8

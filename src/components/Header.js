@@ -33,11 +33,6 @@ export default function Header (props) {
         <>
 
             <Flex
-                display={{
-                    base: "none",
-                    md: "none",
-                    xl: "flex"
-                }}
                 as="header"
                 w="100%"
                 h={{

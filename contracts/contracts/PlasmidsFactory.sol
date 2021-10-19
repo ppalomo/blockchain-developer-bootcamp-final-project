@@ -83,9 +83,10 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
         charityAddress = _charityAddress;
 
         // Initializing attribute values
-        attributes.push(10); // First attribute has 10 different values
-        attributes.push(4);
-        attributes.push(2);
+        attributes.push(7); // First attribute has 7 different values
+        attributes.push(5);
+        attributes.push(3);
+        attributes.push(3);
     }
 
     // Public methods
