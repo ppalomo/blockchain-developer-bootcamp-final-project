@@ -161,7 +161,7 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
      */
     function pendingToRedeem(address _addr) public view returns(uint) {
         uint amount;
-        if (users[_addr].exists && users[_addr].lastRedeemBlock < lastWithdrawBlock){
+        if (users[_addr].exists && users[_addr].userWeight > 0){
             amount = currentYield * users[_addr].userWeight / totalWeight;
         }
         return amount;
@@ -257,15 +257,17 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
      */
     function changeNFTOwner(address _oldOwner, address _newOwner, uint _tokenId) public onlyNFT {
         // Removing NFT from old owner collection
-        uint initialWeight = _removeNftFromUserInfo(_oldOwner, _tokenId);
+        (uint initialWeight, bool isSpecial) = _removeNftFromUserInfo(_oldOwner, _tokenId);
 
         // Adding the NFT to new owner collection
         NFT memory nft = NFT({
             id: _tokenId,
             initialWeight: initialWeight,
             weight: initialWeight,
-            startingBlock: block.number
+            startingBlock: block.number,
+            isSpecial: isSpecial
         });
+
         _addNftToUserInfo(_newOwner, nft);
     }
 
@@ -301,6 +303,29 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
     function setSpecialProbability(uint _specialProbability) external onlyOwner {
         require(_specialProbability >=0 && _specialProbability <= 100, 'Probability should be between 0 - 100');
         specialProbability = _specialProbability;
+    }
+
+    /**
+     @notice Modifying charity address.
+     @param _addr - New charity address.
+     */
+    function setCharityAddress(address _addr) external onlyOwner {
+        require(_addr != address(0), 'Address is incorrect');
+        charityAddress = _addr;
+    }
+
+    /**
+     @notice Method that returns user info all at once.
+     @return mintingPrice, maxSupply, totalSupply, stakedAmount, currentYield.
+     */
+    function getFactoryInfo() external view returns (uint, uint, uint, uint, uint) {
+        return (
+            mintingPrice,
+            maxSupply,
+            nft.totalSupply(),
+            stakedAmount,
+            currentYield
+        );
     }
 
     /**
@@ -404,11 +429,12 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
      @param _addr - Old owner address.
      @param _tokenId - NFT identifier.
      */
-    function _removeNftFromUserInfo(address _addr, uint _tokenId) internal returns (uint) {
+    function _removeNftFromUserInfo(address _addr, uint _tokenId) internal returns (uint, bool) {
         UserInfo storage user = users[_addr];
         
         uint weightLost;
         uint initialWeight;
+        bool isSpecial = false;
         for (uint i=0; i < user.nfts.length; i++) {
             if (user.nfts[i].id == _tokenId) {
                 user.numNfts -= 1;
@@ -418,12 +444,13 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
 
                 initialWeight = user.nfts[i].initialWeight;
                 weightLost = user.nfts[i].weight;
+                isSpecial = user.nfts[i].isSpecial;
                 delete user.nfts[i];
             }
 
             user.userWeight -= weightLost;
         }
-        return initialWeight;
+        return (initialWeight, isSpecial);
     }
 
     /**
@@ -450,9 +477,3 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
     }
 
 }
-
- /**
- Pending:
- - Method to withdraw all.
- - Method to change charity address.
-  */
