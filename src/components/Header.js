@@ -52,7 +52,7 @@ export default function Header (props) {
                 <Link to="/">
                     <Text
                         ml="1rem"
-                        bgGradient="linear(to-l, #7928CA,#FF0080)"
+                        bgGradient="linear(to-l, #E43FE3,#57CAC5)"
                         bgClip="text"
                         fontSize={{
                             "base": "4xl",

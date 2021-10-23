@@ -21,9 +21,12 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
         uint initialWeight; // Special NFT Initial weight
         uint weight; // Current NFT weight
         uint startingBlock; // NFT starting block
+        bool isSpecial;
     }
 
     struct UserInfo {
+        uint numNfts;
+        uint numSpecialNfts;
         uint userWeight; // Total NFT weights that belongs to this user
         uint lastRedeemBlock; // Last redeem block
         bool exists; // Boolean to control user existance
@@ -132,15 +135,14 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
 
         // Minting NFT
         uint newId = nft.mint(msg.sender, dna, _imageURI, _metadataURI, isSpecial, weight);
-        if (isSpecial) {
-            NFT memory nft = NFT({
-                id: newId,
-                initialWeight: weight,
-                weight: weight,
-                startingBlock: block.number
-            });
-            _addNftToUserInfo(msg.sender, nft);
-        }
+        NFT memory nft = NFT({
+            id: newId,
+            initialWeight: weight,
+            weight: weight,
+            startingBlock: block.number,
+            isSpecial: isSpecial
+        });
+        _addNftToUserInfo(msg.sender, nft);
 
         // Cleaning next DNA for this sender
         nextDna[msg.sender] = '';
@@ -390,8 +392,11 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
         user.lastRedeemBlock = block.number;
         user.userWeight += _nft.weight;        
         user.nfts.push(_nft);
-
+        user.numNfts += 1;
         totalWeight += _nft.weight;
+        
+        if (_nft.isSpecial)
+            user.numNfts += 1;
     }
 
         /**
@@ -406,6 +411,11 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
         uint initialWeight;
         for (uint i=0; i < user.nfts.length; i++) {
             if (user.nfts[i].id == _tokenId) {
+                user.numNfts -= 1;
+
+                if(user.nfts[i].isSpecial)
+                    user.numSpecialNfts -= 1;
+
                 initialWeight = user.nfts[i].initialWeight;
                 weightLost = user.nfts[i].weight;
                 delete user.nfts[i];

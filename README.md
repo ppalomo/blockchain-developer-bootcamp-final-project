@@ -58,3 +58,7 @@ npx hardhat clean && npx hardhat verify --network kovan 0xEAbB9d1245633D4d7C6360
 
 npx hardhat clean && npx hardhat verify --network kovan 0x306F9f156cf1CC54C2e5640f68580dC318e22df0 0x887e0296bFdB8DB1B5bb4b855CbCc3F17b3Db3A0 100 50000000000000000 0xEAbB9d1245633D4d7C6360100F8ccE6075375258 0xDaf3E0F6639776617b8fb1BE07b614aB93Bf19a8
 
+## Ideas for the future
+- Create a Plasmid ERC20 token and give some to NFT owners. Even if you don't have an special NFT.
+- Change Plasmid NFT image (mutation) every X redeems.
+

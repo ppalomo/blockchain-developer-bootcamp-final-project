@@ -36,6 +36,10 @@ export default function Home (props) {
     const [plasmid, setPlasmid] = useState();
     const [daysToNextWithdrawal, setDaysToNextWithdrawal] = useState(null);
     const [pendingToRedeem, setPendingToRedeem] = useState(0);
+
+    const [yourNfts, setYourNfts] = useState(0);
+    const [yourSpecialNfts, setYourSpecialNfts] = useState(0);
+    const [yourWeight, setYourWeight] = useState(0);
     // const [hash, setHash] = useState(null);
     // const [metadataHash, setMetadataHash] = useState(null);
 
@@ -86,6 +90,12 @@ export default function Home (props) {
                 if (isWalletConnected) {
                     const toRedeem = await factoryAdminContract.pendingToRedeem(wallet);
                     setPendingToRedeem(toRedeem.toString());
+
+                    const yNfts = await nftAdminContract.balanceOf(wallet);
+                    setYourNfts(yNfts.toString());
+
+                    const userInfo = await factoryAdminContract.users(wallet);
+                    setYourWeight(userInfo.userWeight.toString());
                 }
             }
         } catch (err) {
@@ -312,6 +322,34 @@ export default function Home (props) {
                             </Button>
                         </HStack>
 
+                        
+                        <HStack 
+                            spacing="20px"
+                            pt={{
+                                base: ".5rem",
+                                md: "1rem",
+                                xl: "2rem"
+                            }}>
+                            <VStack>
+                                <Text fontSize="0.8rem" fontWeight="500" color="gray.400">YOUR NFTS</Text>                                    
+                                <Text fontSize="0.9rem" fontWeight="500" color="white.100">
+                                    {yourNfts}
+                                </Text>
+                            </VStack>
+                            <VStack>
+                                <Text fontSize="0.8rem" fontWeight="500" color="gray.400">SPECIAL NFTS</Text>                                    
+                                <Text fontSize="0.9rem" fontWeight="500" color="white.100">
+                                    {yourSpecialNfts}
+                                </Text>
+                            </VStack>
+                            <VStack>
+                                <Text fontSize="0.8rem" fontWeight="500" color="gray.400">NFTS WEIGHT</Text>
+                                <Text fontSize="0.9rem" fontWeight="500" color="white.100">
+                                    {yourWeight}
+                                </Text>
+                            </VStack>
+                        </HStack>
+
                         <Text
                             pt={{
                                 base: "1.5rem",
@@ -325,7 +363,7 @@ export default function Home (props) {
                                 "xl": "2xl"
                             }}
                             fontWeight="bold">
-                            You have {pendingToRedeem} ETH to redeem
+                            You have {Math.round(utils.formatEther(pendingToRedeem.toString()) * 1e3) / 1e3} ETH to redeem
                         </Text>
 
                         <HStack 
