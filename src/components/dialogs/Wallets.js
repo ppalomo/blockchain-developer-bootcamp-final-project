@@ -33,7 +33,7 @@ export default function Wallets() {
     async function getDefaultProvider() {
         await window.ethereum.enable();
         if (network == null || network == undefined) {
-            const networkItem = networks.find(i => i.code === "mumbai");
+            const networkItem = networks.find(i => i.code === "kovan");
             
             let provider = null;                        
             const infuraKey = process.env.REACT_APP_INFURA_API_KEY;

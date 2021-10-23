@@ -6,18 +6,10 @@ import {
     ButtonGroup,
     Flex,
     HStack,
-    IconButton,
     Image,
     Text,
     useColorMode,
     useColorModeValue,
-    Menu,
-    MenuButton,
-    MenuList,
-    MenuItem,
-    MenuDivider,
-    ChevronDownIcon,
-    HamburgerIcon,
 } from '@chakra-ui/react';
 import {
     Link,
@@ -41,11 +33,6 @@ export default function Header (props) {
         <>
 
             <Flex
-                display={{
-                    base: "none",
-                    md: "none",
-                    xl: "flex"
-                }}
                 as="header"
                 w="100%"
                 h={{
@@ -63,17 +50,9 @@ export default function Header (props) {
                 borderColor={borderColor}>
 
                 <Link to="/">
-                    {/* <Image
-                        src={useColorModeValue("images/logo-light.png", "images/logo-dark.png")} 
-                        w={{
-                            base: "10rem", // 0-48em
-                            md: "12rem", // 48em-80em,
-                            xl: "12rem", // 80em+
-                        }} 
-                        objectFit="cover" /> */}
                     <Text
                         ml="1rem"
-                        bgGradient="linear(to-l, #7928CA,#FF0080)"
+                        bgGradient="linear(to-l, #E43FE3,#57CAC5)"
                         bgClip="text"
                         fontSize={{
                             "base": "4xl",
@@ -81,7 +60,7 @@ export default function Header (props) {
                             "xl": "5xl"
                         }}
                         fontWeight="extrabold">
-                        PLASMID
+                        PLASMIDS
                     </Text>
                 </Link>
 

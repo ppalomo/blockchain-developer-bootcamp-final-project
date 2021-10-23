@@ -9,8 +9,7 @@ import {
 } from "react-router-dom";
 import useStore from '../store';
 import { topMenuItems } from '../data/menuItems';
-import Home from './pages/Home';
-import About from './pages/About';
+import Home from './Home';
 
 export default function Content () {
     let location = useLocation();
@@ -25,7 +24,6 @@ export default function Content () {
         <Center>
             <Switch>
                 <Route exact path="/" component={Home} />
-                {/* <Route path="/about" component={About} /> */}
             </Switch>
         </Center>
     );

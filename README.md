@@ -1,5 +1,11 @@
 # Plasmids - Rewarded NFTs Marketplace
-**Project Idea `Pablo Palomo`**
+**Project Idea `Pablo Palomo (ppalomo.eth)`**
+
+Project URL: -----
+Author Address: 0x25f1Db85C33E4b3d3732d02371Dd13F7477F6185
+Screencast URL: -----
+
+## Project Description:
 
 The project consists of the creation of an ERC-721 contract that will send the collected amount of minting NFTs to stake. This way, every month, generated interests will be shared through NFT owners. But... how?
 
@@ -19,3 +25,40 @@ User will mine assets of two types depending on how lucky they are:
 **Objectives:** 
 1. Bring something new to the exciting world of NFTs.
 2. Benefit owners to keep their NTFs and thus raise their price.
+
+## Contracts
+
+The contracts have been deployed to **Kovan Testnet** due to the fact that is the AAVE testnet.
+Plasmids (ERC-721): 0x887e0296bFdB8DB1B5bb4b855CbCc3F17b3Db3A0
+AaveStakingAdapter: 0xEAbB9d1245633D4d7C6360100F8ccE6075375258
+PlasmidsFactory: 0x306F9f156cf1CC54C2e5640f68580dC318e22df0
+
+## Directory Structure:
+???
+
+## How to populate the .ENV file
+REACT_APP_DEFAULT_NETWORK=kovan
+
+REACT_APP_INFURA_API_KEY=?????
+REACT_APP_INFURA_PROJECT_SECRET==?????
+REACT_APP_ETHERSCAN_API_KEY==?????
+REACT_APP_COINMARKETCAP_KEY==?????
+REACT_APP_PINATA_API_KEY==?????
+REACT_APP_PINATA_API_SECRET==?????
+
+REACT_APP_DEPLOYER_PRIVATE_KEY==?????
+
+REACT_APP_PLASMIDS_KOVAN_ADDRESS=0x887e0296bFdB8DB1B5bb4b855CbCc3F17b3Db3A0
+REACT_APP_AAVESTAKINGADAPTER_KOVAN_ADDRESS=0xEAbB9d1245633D4d7C6360100F8ccE6075375258
+REACT_APP_PLASMIDSFACTORY_KOVAN_ADDRESS=0x306F9f156cf1CC54C2e5640f68580dC318e22df0
+
+
+npx hardhat clean && npx hardhat verify --network kovan 0x887e0296bFdB8DB1B5bb4b855CbCc3F17b3Db3A0
+npx hardhat clean && npx hardhat verify --network kovan 0xEAbB9d1245633D4d7C6360100F8ccE6075375258 0x88757f2f99175387ab4c6a4b3067c77a695b0349 0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70 0x87b1f4cf9BD63f7BBD3eE1aD04E8F52540349347
+
+npx hardhat clean && npx hardhat verify --network kovan 0x306F9f156cf1CC54C2e5640f68580dC318e22df0 0x887e0296bFdB8DB1B5bb4b855CbCc3F17b3Db3A0 100 50000000000000000 0xEAbB9d1245633D4d7C6360100F8ccE6075375258 0xDaf3E0F6639776617b8fb1BE07b614aB93Bf19a8
+
+## Ideas for the future
+- Create a Plasmid ERC20 token and give some to NFT owners. Even if you don't have an special NFT.
+- Change Plasmid NFT image (mutation) every X redeems.
+

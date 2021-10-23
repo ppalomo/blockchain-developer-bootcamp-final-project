@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./interfaces/IPlasmids.sol";
+// import "./interfaces/IPlasmidsFactory.sol";
 import "./interfaces/IStakingAdapter.sol";
 import "hardhat/console.sol";
 
@@ -20,9 +21,12 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
         uint initialWeight; // Special NFT Initial weight
         uint weight; // Current NFT weight
         uint startingBlock; // NFT starting block
+        bool isSpecial;
     }
 
     struct UserInfo {
+        uint numNfts;
+        uint numSpecialNfts;
         uint userWeight; // Total NFT weights that belongs to this user
         uint lastRedeemBlock; // Last redeem block
         bool exists; // Boolean to control user existance
@@ -82,9 +86,10 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
         charityAddress = _charityAddress;
 
         // Initializing attribute values
-        attributes.push(10); // First attribute has 10 different values
-        attributes.push(4);
-        attributes.push(2);
+        attributes.push(7); // First attribute has 7 different values
+        attributes.push(5);
+        attributes.push(3);
+        attributes.push(3);
     }
 
     // Public methods
@@ -130,15 +135,14 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
 
         // Minting NFT
         uint newId = nft.mint(msg.sender, dna, _imageURI, _metadataURI, isSpecial, weight);
-        if (isSpecial) {
-            NFT memory nft = NFT({
-                id: newId,
-                initialWeight: weight,
-                weight: weight,
-                startingBlock: block.number
-            });
-            _addNftToUserInfo(msg.sender, nft);
-        }
+        NFT memory nft = NFT({
+            id: newId,
+            initialWeight: weight,
+            weight: weight,
+            startingBlock: block.number,
+            isSpecial: isSpecial
+        });
+        _addNftToUserInfo(msg.sender, nft);
 
         // Cleaning next DNA for this sender
         nextDna[msg.sender] = '';
@@ -388,8 +392,11 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
         user.lastRedeemBlock = block.number;
         user.userWeight += _nft.weight;        
         user.nfts.push(_nft);
-
+        user.numNfts += 1;
         totalWeight += _nft.weight;
+        
+        if (_nft.isSpecial)
+            user.numNfts += 1;
     }
 
         /**
@@ -404,6 +411,11 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
         uint initialWeight;
         for (uint i=0; i < user.nfts.length; i++) {
             if (user.nfts[i].id == _tokenId) {
+                user.numNfts -= 1;
+
+                if(user.nfts[i].isSpecial)
+                    user.numSpecialNfts -= 1;
+
                 initialWeight = user.nfts[i].initialWeight;
                 weightLost = user.nfts[i].weight;
                 delete user.nfts[i];
@@ -438,33 +450,6 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
     }
 
 }
-
-
-// Se hace un withdraw cada mes. Los usuarios con nft especiales pueden retirar su parte cada mes antes que se haga el siguiente withdraw.
-// Poner 'require' en el withdraw. No se puede realizar antes de que pase un mes desde el anterior.
-
-// El yield (unclaimed) que no se haya retirado a tiempo se enviará a caridad.
-
-// Al hacer un mint se añade el nuevo nft a UserInfo del usuario y se recalculan los pesos. Una opción es hacer un redeem automático al hacer mint.
-// Otra opción sería sumar el peso del nuevo nft siempre que el bloque del nft sea menor al bloque del withdraw.
-
-// Al hacer redeem se debe guardar el bloque y transferimos el pago. Solo se permite hacer redeem si el bloque del último redeem es menor que el bloque del withdraw.
-
-// Los nft irán incrementando su peso en 10 cada vez que se haga un redeem. 
-// El recalculo del peso del user y del peso de los NFT se realizará al hacer un redeem.
-// El weight total del usuario será igual a la suma de los pesos de sus nft
-// --> Cuando se transfiera un nft se recalcularán los pesos restando el peso del nft transferido. El nuevo owner tendrá un nft con el peso por defecto.
-
-// Al transferir un NFT, se debe guardar la info del user y del nft en "users" y actualizar la info del owner anterior.
-
-/**
-Tests:
--> Redeem con un solo nft
-- Cannot redeem if I don't have nfts or I have nfts not special or with weight 0.
-- No se puede hacer redeem si no se ha hecho un primer withdraw o el yield es 0.
--> No se puede hacer un redeem si se ha hecho ya previamente en el mes actual.
- */
-
 
  /**
  Pending:

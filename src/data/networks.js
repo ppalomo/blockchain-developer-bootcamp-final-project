@@ -60,6 +60,16 @@ export const networks = [
         "enabled": false,
     },
     {
+        "chainId": 42,
+        "code": "kovan",
+        "name": "Kovan",
+        "icon": "eth-icon.svg",
+        "rpcUrl": "https://kovan.infura.io/v3/[INFURA_KEY]",
+        "symbol": "ETH",
+        "explorerUrl": "https://kovan.etherscan.io",
+        "enabled": true,
+    },
+    {
         "chainId": 80001,
         "code": "mumbai",
         "name": "Mumbai",
@@ -67,7 +77,7 @@ export const networks = [
         "rpcUrl": "https://rpc-mumbai.matic.today",
         "symbol": "MATIC",
         "explorerUrl": "https://mumbai-explorer.matic.today",
-        "enabled": true,
+        "enabled": false,
     },
     {
         "chainId": 97,
