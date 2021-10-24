@@ -36,6 +36,7 @@ export default function Home (props) {
     const [plasmid, setPlasmid] = useState();
     const [daysToNextWithdrawal, setDaysToNextWithdrawal] = useState(null);
     const [pendingToRedeem, setPendingToRedeem] = useState(0);
+    const [totalSentToCharity, setTotalSentToCharity] = useState(0);    
 
     const [yourNfts, setYourNfts] = useState(0);
     const [yourSpecialNfts, setYourSpecialNfts] = useState(0);
@@ -78,6 +79,9 @@ export default function Home (props) {
                 setTotalSupply(info[2].toString());
                 setStakedAmount(info[3].toString());
                 setCurrentYield(info[4].toString());
+
+                const charity = await factoryAdminContract.totalSentToCharity();
+                setTotalSentToCharity(charity);
 
                 if (isWalletConnected) {
                     const toRedeem = await factoryAdminContract.pendingToRedeem(wallet);
@@ -338,12 +342,12 @@ export default function Home (props) {
                             }}
                             color="gray.700"
                             fontSize={{
-                                "base": "2xl",
-                                "md": "2xl",
-                                "xl": "2xl"
+                                "base": "1xl",
+                                "md": "1xl",
+                                "xl": "1xl"
                             }}
                             fontWeight="bold">
-                            You have {Math.round(utils.formatEther(pendingToRedeem.toString()) * 1e3) / 1e3} ETH to redeem
+                            You have {Math.round(utils.formatEther(pendingToRedeem.toString()) * 1e8) / 1e8} ETH to redeem this month
                         </Text>
 
                         <HStack 
@@ -391,6 +395,24 @@ export default function Home (props) {
                 </WrapItem>
 
             </Wrap >
+
+            <Center>
+                <Text
+                    pt={{
+                        base: "1rem",
+                        md: "1rem",
+                        xl: "1rem"
+                    }}
+                    color="gray.700"
+                    fontSize={{
+                        "base": "2xl",
+                        "md": "2xl",
+                        "xl": "2xl"
+                    }}
+                    fontWeight="bold">
+                    {Math.round(utils.formatEther(totalSentToCharity.toString()) * 1e8) / 1e8} ETH sent to charity until now
+                </Text>
+            </Center>
 
         </VStack>
     );
