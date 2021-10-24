@@ -256,19 +256,21 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
      @param _tokenId - Token identifier.
      */
     function changeNFTOwner(address _oldOwner, address _newOwner, uint _tokenId) public onlyNFT {
-        // Removing NFT from old owner collection
-        (uint initialWeight, bool isSpecial) = _removeNftFromUserInfo(_oldOwner, _tokenId);
+        if(_oldOwner != address(0)) {
+            // Removing NFT from old owner collection
+            (uint initialWeight, bool isSpecial) = _removeNftFromUserInfo(_oldOwner, _tokenId);
 
-        // Adding the NFT to new owner collection
-        NFT memory nft = NFT({
-            id: _tokenId,
-            initialWeight: initialWeight,
-            weight: initialWeight,
-            startingBlock: block.number,
-            isSpecial: isSpecial
-        });
+            // Adding the NFT to new owner collection
+            NFT memory nft = NFT({
+                id: _tokenId,
+                initialWeight: initialWeight,
+                weight: initialWeight,
+                startingBlock: block.number,
+                isSpecial: isSpecial
+            });
 
-        _addNftToUserInfo(_newOwner, nft);
+            _addNftToUserInfo(_newOwner, nft);
+        }
     }
 
     /**
@@ -418,10 +420,11 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
         user.userWeight += _nft.weight;        
         user.nfts.push(_nft);
         user.numNfts += 1;
+        console.log("inc", user.numNfts);
         totalWeight += _nft.weight;
         
         if (_nft.isSpecial)
-            user.numNfts += 1;
+            user.numSpecialNfts += 1;
     }
 
         /**
@@ -437,11 +440,6 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
         bool isSpecial = false;
         for (uint i=0; i < user.nfts.length; i++) {
             if (user.nfts[i].id == _tokenId) {
-                user.numNfts -= 1;
-
-                if(user.nfts[i].isSpecial)
-                    user.numSpecialNfts -= 1;
-
                 initialWeight = user.nfts[i].initialWeight;
                 weightLost = user.nfts[i].weight;
                 isSpecial = user.nfts[i].isSpecial;
@@ -449,6 +447,9 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
             }
 
             user.userWeight -= weightLost;
+            user.numNfts -= 1;
+            if(isSpecial)
+                user.numSpecialNfts -= 1;
         }
         return (initialWeight, isSpecial);
     }

@@ -70,6 +70,12 @@ describe("Kreepies Factory", function() {
             expect(item[0]).to.be.equal(dna);
             expect(item[1]).to.be.equal(imageURI);
             expect(await nft.tokenURI(0)).to.be.equal(metadataURI);
+
+            const info = await factory.users(addr1.address);
+            expect(info.userWeight).to.equal(item.weight);
+            expect(info.lastRedeemBlock).to.be.above(0);
+            expect(info.exists).to.equal(true);
+            expect(info.numNfts).to.equal(1);
         }).timeout(timeout);;
 
         it("Should store payments in the balance", async function() {
@@ -112,6 +118,8 @@ describe("Kreepies Factory", function() {
             expect(info.userWeight).to.equal(item.weight);
             expect(info.lastRedeemBlock).to.be.above(0);
             expect(info.exists).to.equal(true);
+            expect(info.numNfts).to.equal(1);
+            expect(info.numSpecialNfts).to.equal(1);
         }).timeout(timeout);;
 
         it("Shouldn't mint if dna was not generated before", async function() {

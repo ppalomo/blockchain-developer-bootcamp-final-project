@@ -70,31 +70,22 @@ export default function Home (props) {
     async function fetchData() {
         try {
             if(factoryAdminContract != null && nftAdminContract != null) {
-                setDaysToNextWithdrawal(datediff(parseDate('10/19/2021'), parseDate(getNextDay1())));
-
-                const price = await factoryAdminContract.mintingPrice();
-                setMintingPrice(price.toString());
-
-                const mSupply = await factoryAdminContract.maxSupply();
-                setMaxSupply(mSupply.toString());
-
-                const tSupply = await nftAdminContract.totalSupply();
-                setTotalSupply(tSupply.toString());
-
-                const stkAmount = await factoryAdminContract.stakedAmount();
-                setStakedAmount(stkAmount.toString());
-
-                const cYield = await factoryAdminContract.currentYield();
-                setCurrentYield(cYield.toString());
+                setDaysToNextWithdrawal(datediff(Date.now(), parseDate(getNextDay1())) + 1);
+                
+                const info = await factoryAdminContract.getFactoryInfo();
+                setMintingPrice(info[0].toString());
+                setMaxSupply(info[1].toString());
+                setTotalSupply(info[2].toString());
+                setStakedAmount(info[3].toString());
+                setCurrentYield(info[4].toString());
 
                 if (isWalletConnected) {
                     const toRedeem = await factoryAdminContract.pendingToRedeem(wallet);
                     setPendingToRedeem(toRedeem.toString());
 
-                    const yNfts = await nftAdminContract.balanceOf(wallet);
-                    setYourNfts(yNfts.toString());
-
                     const userInfo = await factoryAdminContract.users(wallet);
+                    setYourNfts(userInfo.numNfts.toString());
+                    setYourSpecialNfts(userInfo.numSpecialNfts.toString());
                     setYourWeight(userInfo.userWeight.toString());
                 }
             }
@@ -108,7 +99,7 @@ export default function Home (props) {
         {
             try {              
                 // Generating a random DNA
-                const tx = await factoryContract.getRandomDna();
+                const tx = await factoryContract.getRandomDna({ gasLimit: 200000 });
                 const result = await tx.wait();
                 setDna(result.events[0].args[1])
                 
@@ -129,9 +120,10 @@ export default function Home (props) {
         });
     }
 
-    async function handlRedeem(e) {
-        // let dna0 = getRandomDna();
-        // generateImage(dna0);
+    async function handlRedeem(e) {        
+        const tx = await factoryContract.redeem({ gasLimit: 500000 });
+        const result = await tx.wait();
+        fetchData();
     }
 
     function getHashesByDna(dna0){
@@ -146,16 +138,6 @@ export default function Home (props) {
         }
         return imgs;
     }
-
-    // function getRandomDna() {
-    //     const p1 = Math.floor(Math.random() * 7);
-    //     const p2 = Math.floor(Math.random() * 5);
-    //     const p3 = Math.floor(Math.random() * 3);
-    //     const p4 = Math.floor(Math.random() * 3);
-    //     let dna = ("0" + p1).slice(-2) + ("0" + p2).slice(-2) + ("0" + p3).slice(-2) + ("0" + p4).slice(-2);
-    //     console.log("getRandomDna  => ", dna);
-    //     return dna;
-    // }
 
     async function uploadMetadata(imgHash){
         const metadata = `{
@@ -187,10 +169,8 @@ export default function Home (props) {
         const metadataURI = 'https://ipfs.io/ipfs/' + mHash;
         try {
             if(factoryContract) {
-                const tx = await factoryContract.mintNFT(imageURI, metadataURI, {value: mintingPrice.toString()});
+                const tx = await factoryContract.mintNFT(imageURI, metadataURI, {value: mintingPrice.toString(), gasLimit: 1000000 });
                 const result = await tx.wait();
-                // console.log("index = ", result.events[0].args[2].toString());
-                // console.log("nftContract.address = ", nftContract.address);
             }
         } catch (error) {
             console.log(error);
@@ -299,7 +279,7 @@ export default function Home (props) {
                             <VStack>
                                 <Text fontSize="0.8rem" fontWeight="500" color="gray.400">YIELD</Text>
                                 <Text fontSize="0.9rem" fontWeight="500" color="white.100">
-                                    {currentYield != undefined ? Math.round(utils.formatEther(currentYield.toString()) * 1e3) / 1e3 : ""} ETH
+                                    {currentYield != undefined ? Math.round(utils.formatEther(currentYield.toString()) * 1e6) / 1e6 : ""} ETH
                                 </Text>
                             </VStack>
                         </HStack>

@@ -118,7 +118,8 @@ contract Plasmids is ERC721, ERC721URIStorage, Ownable {
     ) internal virtual override(ERC721) {
         super._beforeTokenTransfer(from, to, tokenId);
 
-        IPlasmidsFactory(factory).changeNFTOwner(from, to, tokenId);
+        if (from != address(0))
+            IPlasmidsFactory(factory).changeNFTOwner(from, to, tokenId);
     }
 
     // Modifiers
