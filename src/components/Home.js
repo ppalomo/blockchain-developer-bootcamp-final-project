@@ -124,7 +124,7 @@ export default function Home (props) {
         });
     }
 
-    async function handlRedeem(e) {        
+    async function handleRedeem(e) {        
         const tx = await factoryContract.redeem({ gasLimit: 500000 });
         const result = await tx.wait();
         fetchData();
@@ -288,86 +288,108 @@ export default function Home (props) {
                             </VStack>
                         </HStack>
 
-                        <HStack 
-                            spacing="20px"
-                            pt={{
-                                base: ".5rem",
-                                md: "2rem",
-                                xl: "2rem"
-                            }}>
-                            <Button 
-                                isDisabled={!isWalletConnected}
-                                onClick={() => handleMinting() }
-                                w="150px"
-                                fontSize={14}
-                                colorScheme="green"
-                                variant="solid">
-                                Mint
-                            </Button>
-                        </HStack>
+                        {isWalletConnected ?
+                            <>
+                            <HStack 
+                                spacing="20px"
+                                pt={{
+                                    base: ".5rem",
+                                    md: "2rem",
+                                    xl: "2rem"
+                                }}>
+                                <Button 
+                                    isDisabled={!isWalletConnected}
+                                    onClick={() => handleMinting() }
+                                    w="150px"
+                                    fontSize={14}
+                                    colorScheme="green"
+                                    variant="solid">
+                                    Mint
+                                </Button>
+                            </HStack>
 
+                            <HStack 
+                                spacing="20px"
+                                pt={{
+                                    base: ".5rem",
+                                    md: "1rem",
+                                    xl: "2rem"
+                                }}>
+                                <VStack>
+                                    <Text fontSize="0.8rem" fontWeight="500" color="gray.400">YOUR NFTS</Text>                                    
+                                    <Text fontSize="0.9rem" fontWeight="500" color="white.100">
+                                        {yourNfts}
+                                    </Text>
+                                </VStack>
+                                <VStack>
+                                    <Text fontSize="0.8rem" fontWeight="500" color="gray.400">SPECIAL NFTS</Text>                                    
+                                    <Text fontSize="0.9rem" fontWeight="500" color="white.100">
+                                        {yourSpecialNfts}
+                                    </Text>
+                                </VStack>
+                                <VStack>
+                                    <Text fontSize="0.8rem" fontWeight="500" color="gray.400">NFTS WEIGHT</Text>
+                                    <Text fontSize="0.9rem" fontWeight="500" color="white.100">
+                                        {yourWeight}
+                                    </Text>
+                                </VStack>
+                            </HStack>
+
+                            <Text
+                                pt={{
+                                    base: "1.5rem",
+                                    md: "2rem",
+                                    xl: "2rem"
+                                }}
+                                color="gray.700"
+                                fontSize={{
+                                    "base": "1xl",
+                                    "md": "1xl",
+                                    "xl": "1xl"
+                                }}
+                                fontWeight="bold">
+                                You have {Math.round(utils.formatEther(pendingToRedeem.toString()) * 1e8) / 1e8} ETH to redeem this month
+                            </Text>
+
+                            <HStack 
+                                spacing="20px"
+                                pt={{
+                                    base: ".5rem",
+                                    md: "2rem",
+                                    xl: "2rem"
+                                }}>
+                                <Button
+                                    isDisabled={!isWalletConnected}
+                                    onClick={() => handleRedeem() }
+                                    w="150px"
+                                    fontSize={14}
+                                    colorScheme="blue"
+                                    variant="solid">
+                                    Redeem
+                                </Button>
+                            </HStack>
+
+                            </>
+                        :
+
+                            <Text
+                                pt={{
+                                    base: "3rem",
+                                    md: "5rem",
+                                    xl: "5rem"
+                                }}
+                                color="blue.300"
+                                fontSize={{
+                                    "base": "1xl",
+                                    "md": "1xl",
+                                    "xl": "1xl"
+                                }}
+                                fontWeight="bold">
+                                Please, connect your wallet
+                            </Text>
+
+                        }
                         
-                        <HStack 
-                            spacing="20px"
-                            pt={{
-                                base: ".5rem",
-                                md: "1rem",
-                                xl: "2rem"
-                            }}>
-                            <VStack>
-                                <Text fontSize="0.8rem" fontWeight="500" color="gray.400">YOUR NFTS</Text>                                    
-                                <Text fontSize="0.9rem" fontWeight="500" color="white.100">
-                                    {yourNfts}
-                                </Text>
-                            </VStack>
-                            <VStack>
-                                <Text fontSize="0.8rem" fontWeight="500" color="gray.400">SPECIAL NFTS</Text>                                    
-                                <Text fontSize="0.9rem" fontWeight="500" color="white.100">
-                                    {yourSpecialNfts}
-                                </Text>
-                            </VStack>
-                            <VStack>
-                                <Text fontSize="0.8rem" fontWeight="500" color="gray.400">NFTS WEIGHT</Text>
-                                <Text fontSize="0.9rem" fontWeight="500" color="white.100">
-                                    {yourWeight}
-                                </Text>
-                            </VStack>
-                        </HStack>
-
-                        <Text
-                            pt={{
-                                base: "1.5rem",
-                                md: "2rem",
-                                xl: "2rem"
-                            }}
-                            color="gray.700"
-                            fontSize={{
-                                "base": "1xl",
-                                "md": "1xl",
-                                "xl": "1xl"
-                            }}
-                            fontWeight="bold">
-                            You have {Math.round(utils.formatEther(pendingToRedeem.toString()) * 1e8) / 1e8} ETH to redeem this month
-                        </Text>
-
-                        <HStack 
-                            spacing="20px"
-                            pt={{
-                                base: ".5rem",
-                                md: "2rem",
-                                xl: "2rem"
-                            }}>
-                            <Button
-                                isDisabled={!isWalletConnected}
-                                onClick={() => handlRedeem() }
-                                w="150px"
-                                fontSize={14}
-                                colorScheme="blue"
-                                variant="solid">
-                                Redeem
-                            </Button>
-                        </HStack>
-
                     </VStack>
                 </WrapItem>
 
