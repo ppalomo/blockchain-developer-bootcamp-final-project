@@ -45,3 +45,11 @@ function withdraw() external onlyOwner {
   // Withdrawing pending yield
 }
 ```
+
+6. Owner can send the unclaimed yield to charity
+
+```solidity
+function sendToCharity() external onlyOwner {
+  // Sending unclaimed yield to charity
+}
+```

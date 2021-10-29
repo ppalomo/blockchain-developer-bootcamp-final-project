@@ -110,6 +110,9 @@ contract Plasmids is ERC721, ERC721URIStorage, Ownable {
 
     /**
      @notice Before transfer function.
+     @param from - Seller address.
+     @param to - Beneficiary address.
+     @param tokenId - Token identifier which is going to be sold.
      */
     function _beforeTokenTransfer(
         address from,

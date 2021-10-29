@@ -41,13 +41,19 @@ describe("Kreepies ERC-721", function() {
         await nft.setFactory(factory.address);
     });
 
+    // Tests related to the ERC-721.
     describe("ERC-721", function() {
 
+        // The contract must have the correct address of its factory contract.
         it("Should set the factory address", async function() {
             // Assert
             expect(await nft.factory()).to.be.equal(factory.address);
         });
 
+        /**
+         * It souldn't be possible to execute the minting if the caller isn't the factory contract.
+         * The mintings must be executed from the factory contract.
+         */
         it("Shouldn't mint if caller isn't the factory", async function() {
             // Arrange
             const dna = await getRandomDna(addr1);
@@ -58,6 +64,10 @@ describe("Kreepies ERC-721", function() {
             ).to.be.revertedWith('Caller is not the factory contract');
         });
 
+        /**
+         * This test checks an NFT transfer.
+         * The factory info must be updated and the transfer must be successful.
+         */
         it("Should transfer an NFT", async function() {
             // Arrange
             await factory.setSpecialProbability(100);

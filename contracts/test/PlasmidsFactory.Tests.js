@@ -41,8 +41,10 @@ describe("Kreepies Factory", function() {
         await nft.setFactory(factory.address);
     });
 
+    // Tests related to the NFT DNA random generation,
     describe("DNA Generation", function() {
 
+        // We're checking if a correct dna has been generated.
         it("Should get a random DNA", async function() {
             // Act
             const dna = await getRandomDna(addr1);
@@ -53,8 +55,13 @@ describe("Kreepies Factory", function() {
 
     });
 
+    // Every test related with a new NFT minting.
     describe("Minting", function() {
 
+        /**
+         * Testing a succesful minting.
+         * Total supply must increase, the NFT has been generated in the ERC721 contract, the user info is stored correctly.
+         */
         it("Should mint a new NFT", async function() {
             // Arrange
             const dna = await getRandomDna(addr1);
@@ -78,6 +85,7 @@ describe("Kreepies Factory", function() {
             expect(info.numNfts).to.equal(1);
         }).timeout(timeout);;
 
+        // The balance has been increased after a new minting.
         it("Should store payments in the balance", async function() {
             // Arrange
             const pendingStake = await factory.pendingStake();
@@ -98,6 +106,7 @@ describe("Kreepies Factory", function() {
             expect(lastBalance).to.be.equal(balance.add(ethers.utils.parseEther('2')));
         }).timeout(timeout);;
 
+        // If the minted NFT is special, it must calculate its weight.
         it("Should calculate special and weight attributes", async function() {
             // Arrange
             await factory.setSpecialProbability(100);
@@ -122,6 +131,7 @@ describe("Kreepies Factory", function() {
             expect(info.numSpecialNfts).to.equal(1);
         }).timeout(timeout);;
 
+        // Need to check if a dna has been generated before minting.
         it("Shouldn't mint if dna was not generated before", async function() {
             // Assert
             await expect(
@@ -129,6 +139,7 @@ describe("Kreepies Factory", function() {
             ).to.be.revertedWith('Should generate a random DNA before minting');
         }).timeout(timeout);;
 
+        // It's necessary to check that the same dna cannot be minted twice.
         it("Shouldn't mint twice with the same dna", async function() {
             // Arrange
             const dna = await getRandomDna(addr1);
@@ -142,6 +153,7 @@ describe("Kreepies Factory", function() {
             ).to.be.revertedWith('Should generate a random DNA before minting');
         }).timeout(timeout);;
 
+        // The price sent by the user to mint must be the minting price. Otherwise the transaction must revert.
         it("Shouldn't mint if price isn't correct", async function() {
             // Arrange
             const dna = await getRandomDna(addr1);
@@ -155,6 +167,7 @@ describe("Kreepies Factory", function() {
             expect(await nft.totalSupply()).to.be.equal(0);
         }).timeout(timeout);;
 
+        // It shouldn't be possible to mint if the maximum supply has been reched. We're controlling that here.
         it("Shouldn't mint if max supply has been reached", async function() {
             // Arrange
             let dna = await getRandomDna(addr1);
@@ -175,8 +188,10 @@ describe("Kreepies Factory", function() {
 
     });
 
+    // Tests related with the maximum supply.
     describe("Max Supply", function() {
 
+        // Max supply can be updated anytime if needed.
         it("Should modify max supply", async function() {
             // Arrange
             const newMaxSupply = 10;
@@ -188,6 +203,7 @@ describe("Kreepies Factory", function() {
             expect(await factory.maxSupply()).to.be.equal(newMaxSupply);
         }).timeout(timeout);;
 
+        // We need to check that the new max supply is bigger than the current supply.
         it("Shouldn't set a max supply less than current supply", async function() {
             // Arrange
             let dna = await getRandomDna(addr1);
@@ -202,6 +218,7 @@ describe("Kreepies Factory", function() {
             ).to.be.revertedWith('Max supply cannot be less than current supply');
         }).timeout(timeout);;
 
+        // We are checking that only the owner can update the max supply.
         it("Shouln't modify max supply if sender isn't the owner", async function() {
             // Arrange
             const newMaxSupply = 10;
@@ -214,8 +231,10 @@ describe("Kreepies Factory", function() {
 
     });
 
+    // Tests related to minting price
     describe("Minting Price", function() {
 
+        // Minting price can be updated anytime if needed.
         it("Should modify minting price", async function() {
             // Arrange
             const newPrice = ethers.utils.parseEther('2');
@@ -227,6 +246,7 @@ describe("Kreepies Factory", function() {
             expect(await factory.mintingPrice()).to.be.equal(newPrice);
         });
 
+        // We are checking that only the owner can update the minting price.
         it("Shouln't modify minting price if sender isn't the owner", async function() {
             // Arrange
             const newPrice = ethers.utils.parseEther('2');
@@ -239,8 +259,10 @@ describe("Kreepies Factory", function() {
 
     });
 
+    // Tests related to the special probability ratio.
     describe("Special Probability", function() {
         
+        // Special probability ratio can be updated anytime if needed.
         it("Should modify special probability", async function() {
             // Arrange
             const newProbability = 20;
@@ -252,6 +274,7 @@ describe("Kreepies Factory", function() {
             expect(await factory.specialProbability()).to.be.equal(newProbability);
         });
 
+        // Special probability ratio must be less than 100.
         it("Shouldn't set a probability greater than 100", async function() {
             // Assert
             await expect(
@@ -259,6 +282,7 @@ describe("Kreepies Factory", function() {
             ).to.be.revertedWith('Probability should be between 0 - 100');
         });
 
+        // We are checking that only the owner can update the special probability ratio.
         it("Shouldn't modify special probability if sender isn't the owner", async function() {
             // Assert
             await expect(
@@ -268,8 +292,10 @@ describe("Kreepies Factory", function() {
 
     });
 
+    // All tests related with staking process.
     describe("Staking", function() {
 
+        // Testing if the staking process has been successful. The amount sent must be stored in the AAVE contract.
         it("Should stake pending balance", async function() {
             // Arrange
             await getRandomDna(addr1);
@@ -288,6 +314,7 @@ describe("Kreepies Factory", function() {
             expect(stakedAmount).to.be.equal(mintingPrice.add(mintingPrice));
         }).timeout(timeout);
 
+        // Cannot send to stake if the caller isn't the owner.
         it("Shouldn't stake if sender isn't the owner", async function() {
             // Arrange
             let dna = await getRandomDna(addr1);
@@ -301,8 +328,13 @@ describe("Kreepies Factory", function() {
 
     });
 
+    // Every test related to the withdraw process.
     describe("Withdraw", function() {
 
+        /**
+         * Test used to tests the withdraw process.
+         * Current yield to share must be greater than 0, unclaimed yield must increase, etc.
+         */
         it("Should withdraw pending yield", async function() {
             // Arrange
             await getRandomDna(addr1);
@@ -330,8 +362,10 @@ describe("Kreepies Factory", function() {
 
     });
 
+    // Tests related to charity options
     describe("Send to Charity", function() {
 
+        // Checking transfer to charity of the monthly unclaimed yield.
         it("Should send unclaimed yield to charity", async function() {
             const originalBalance = await addrs[2].getBalance();
 
@@ -360,8 +394,13 @@ describe("Kreepies Factory", function() {
 
     });
 
+    // Tests related to redeem process.
     describe("Redeem", function() {
 
+        /**
+         * Checking the redeem process.
+         * User balance may increase.
+         */
         it("Should redeem pending monthly yield", async function() {
             // Arrange
             await factory.setSpecialProbability(100);
@@ -393,6 +432,7 @@ describe("Kreepies Factory", function() {
             expect(currentInfo.userWeight).to.be.above(originalInfo.userWeight);
         }).timeout(timeout);
 
+        // Testing the fact that a user cannot redeem twice the same month.
         it("Shouldn't redeem twice the same month", async function() {
             // Arrange
             await factory.setSpecialProbability(100);
