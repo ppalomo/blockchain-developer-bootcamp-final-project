@@ -22,7 +22,7 @@ import { images } from '../data/images';
 const IPFS = require('ipfs-api');
 
 export default function Home (props) {
-    const { isWalletConnected, wallet } = useStore();
+    const { isWalletConnected, wallet, signer, setBalance } = useStore();
     const factoryContract = useContract("PlasmidsFactory");
     const factoryAdminContract = useAdminContract("PlasmidsFactory");
     const nftAdminContract = useAdminContract("Plasmids");
@@ -37,13 +37,10 @@ export default function Home (props) {
     const [plasmid, setPlasmid] = useState();
     const [daysToNextWithdrawal, setDaysToNextWithdrawal] = useState(null);
     const [pendingToRedeem, setPendingToRedeem] = useState(0);
-    const [totalSentToCharity, setTotalSentToCharity] = useState(0);    
-
+    const [totalSentToCharity, setTotalSentToCharity] = useState(0);
     const [yourNfts, setYourNfts] = useState(0);
     const [yourSpecialNfts, setYourSpecialNfts] = useState(0);
     const [yourWeight, setYourWeight] = useState(0);
-    // const [hash, setHash] = useState(null);
-    // const [metadataHash, setMetadataHash] = useState(null);
 
     useEffect(async () => {
         if (factoryAdminContract && !contractsLoaded)
@@ -70,16 +67,19 @@ export default function Home (props) {
                     console.error(error)
                     return
                 }
-                // console.log(result[0].hash);
-                // setHash(result[0].hash);
                 uploadMetadata(result[0].hash);
             });
         }
     }, [plasmid]);
 
     async function fetchData() {
-    console.log("fetchData");
         try {
+            // Updating wallet balance
+            if (signer != null){
+                const bal = await signer.getBalance();
+                setBalance(bal);
+            }
+
             if(factoryAdminContract != null && nftAdminContract != null) {
                 setDaysToNextWithdrawal(datediff(Date.now(), parseDate(getNextDay1())) + 1);
                 
@@ -137,7 +137,6 @@ export default function Home (props) {
     async function handleRedeem(e) {        
         const tx = await factoryContract.redeem({ gasLimit: 500000 });
         const result = await tx.wait();
-        console.log("handleRedeem");
         fetchData();
     }
 
@@ -190,7 +189,6 @@ export default function Home (props) {
         } catch (error) {
             console.log(error);
         }
-        console.log("mintNFT");
         fetchData();
     }
 

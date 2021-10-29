@@ -90,6 +90,26 @@ REACT_APP_AAVESTAKINGADAPTER_KOVAN_ADDRESS=0xEAbB9d1245633D4d7C6360100F8ccE60753
 
 REACT_APP_PLASMIDSFACTORY_KOVAN_ADDRESS=0x306F9f156cf1CC54C2e5640f68580dC318e22df0
 
+# How to run the application
+
+1) First we'll need to clone the repository.
+
+```
+$ git clone https://github.com/ppalomo/blockchain-developer-bootcamp-final-project.git
+```
+
+2) Go inside the created directory and intall all the dependencies.
+
+```
+$ npm install
+```
+
+3) Execute the app.
+
+```
+$ yarn start
+```
+
 
 # How to execute the tests
 

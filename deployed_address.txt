@@ -1,0 +1,5 @@
+Network: Kovan
+
+Plasmids (address): 0x5c3f7D44cB21BD93e7fcA3Fd2379D902d742BedC
+PlasmidsFactory (address): 0xc5Cc3648109885E14363E6EA1f9B1eF10B28b9C5
+AaveStakingAdapter (address): 0xdFC8EF2e2B50160CD3C61F9614887e4ce55F2257

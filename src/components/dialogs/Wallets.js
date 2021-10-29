@@ -58,8 +58,8 @@ export default function Wallets() {
         {
             const signer = provider.getSigner();
             const wallet = await signer.getAddress();        
-            const bal = await signer.getBalance();    
-            setProvider(provider, signer, wallet, networkItem, bal);            
+            const bal = await signer.getBalance();
+            setProvider(provider, signer, wallet, networkItem, bal);
     
             provider.removeAllListeners("network");
             provider.on("network", (newNetwork, oldNetwork) => {
