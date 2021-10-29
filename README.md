@@ -49,27 +49,70 @@ This is the factory contract where the magic happens. Here we can find all the m
 ###
 
 ## Directory Structure:
-???
+
+In this section I will briefly describe the directory structure:
+
+-   **contracts**: This directory stores the HardHat project. He re we can find the contracts, intefaces, tests and scripts to deploy them.
+    -   **contracts**: Stores the different contracts.
+        -   **interfaces**: Stores the different interfaces.
+    -   **scripts**: Stores the deploy script.
+    -   **tests**: Stores the test files.
+-   **public**: Public resources for the fronted like images.    
+-   **src**: React Project source files.
+    -   **abis**: Contract abis used to communicate the frontend with the blockchain.
+    -   **components**: All the Reacts components used to build the interface.
+    -   **data**: Data dictionaries.
+    -   **hooks**: Useful hooks to use in the frontend.
+    -   **styles**: Style files.
+    -   **utils**: Useful common methods.
+
+###
 
 ## How to populate the .ENV file
+
+In order to populate the .env file we have to fill the next variables:
+
 REACT_APP_DEFAULT_NETWORK=kovan
 
-REACT_APP_INFURA_API_KEY=?????
-REACT_APP_INFURA_PROJECT_SECRET==?????
-REACT_APP_ETHERSCAN_API_KEY==?????
-REACT_APP_COINMARKETCAP_KEY==?????
-REACT_APP_PINATA_API_KEY==?????
-REACT_APP_PINATA_API_SECRET==?????
-REACT_APP_DEPLOYER_PRIVATE_KEY==???
+REACT_APP_INFURA_API_KEY=??????????
+
+REACT_APP_INFURA_PROJECT_SECRET=??????????
+
+REACT_APP_ETHERSCAN_API_KEY=??????????
+
+REACT_APP_PINATA_API_KEY=??????????
+
+REACT_APP_PINATA_API_SECRET=??????????
+
 REACT_APP_PLASMIDS_KOVAN_ADDRESS=0x887e0296bFdB8DB1B5bb4b855CbCc3F17b3Db3A0
+
 REACT_APP_AAVESTAKINGADAPTER_KOVAN_ADDRESS=0xEAbB9d1245633D4d7C6360100F8ccE6075375258
+
 REACT_APP_PLASMIDSFACTORY_KOVAN_ADDRESS=0x306F9f156cf1CC54C2e5640f68580dC318e22df0
 
 
-npx hardhat clean && npx hardhat verify --network kovan 0x887e0296bFdB8DB1B5bb4b855CbCc3F17b3Db3A0
-npx hardhat clean && npx hardhat verify --network kovan 0xEAbB9d1245633D4d7C6360100F8ccE6075375258 0x88757f2f99175387ab4c6a4b3067c77a695b0349 0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70 0x87b1f4cf9BD63f7BBD3eE1aD04E8F52540349347
+# How to execute the tests
 
-npx hardhat clean && npx hardhat verify --network kovan 0x306F9f156cf1CC54C2e5640f68580dC318e22df0 0x887e0296bFdB8DB1B5bb4b855CbCc3F17b3Db3A0 100 50000000000000000 0xEAbB9d1245633D4d7C6360100F8ccE6075375258 0xDaf3E0F6639776617b8fb1BE07b614aB93Bf19a8
+If we want to execute the test we need to follow the next steps:
+
+1) First of all, we need to install the utility **[ganache-cli](https://docs.nethereum.com/en/latest/ethereum-and-clients/ganache-cli/#:~:text=Ganache%20CLI%20is%20the%20latest,running%20an%20actual%20Ethereum%20node.&text=Accounts%20can%20be%20re%2Dcycled,need%20for%20faucets%20or%20mining)** to fork the **mainnet**. This step is necessary to test the integration with an already deployed protocol like **AAVE**.
+
+```
+$ npm install -g ganache-cli
+$ yarn global add ganache-cli
+```
+
+2) Then, we can execute the new local forked chain. We'll need an Infura key.
+
+```
+$ ganache-cli --fork https://mainnet.infura.io/v3/[replace-with-infura-key]
+```
+
+3) Finally, we can execute the tests in a different command window.
+
+```
+$ npx hardhat test --network localhost
+```
 
 ## Ideas for the future
 - Create a Plasmid ERC20 token and give some to NFT owners. Even if you don't have an special NFT.

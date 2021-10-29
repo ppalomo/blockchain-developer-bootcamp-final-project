@@ -26,6 +26,7 @@ export default function Home (props) {
     const factoryContract = useContract("PlasmidsFactory");
     const factoryAdminContract = useAdminContract("PlasmidsFactory");
     const nftAdminContract = useAdminContract("Plasmids");
+    const [contractsLoaded, setContractsLoaded] = useState(false);
     const [mintingPrice, setMintingPrice] = useState(0);
     const [maxSupply, setMaxSupply] = useState(0);
     const [totalSupply, setTotalSupply] = useState(0);
@@ -45,11 +46,19 @@ export default function Home (props) {
     // const [metadataHash, setMetadataHash] = useState(null);
 
     useEffect(async () => {
+        if (factoryAdminContract && !contractsLoaded)
+        {
+            setContractsLoaded(true);
+            await fetchData();
+        }
+    }, [factoryAdminContract]);
+
+    useEffect(async () => {
         if (factoryAdminContract)
         {
             await fetchData();
         }
-    }, [factoryAdminContract]);
+    }, [isWalletConnected]);
 
     useEffect(async () => {
         if (plasmid)
@@ -69,6 +78,7 @@ export default function Home (props) {
     }, [plasmid]);
 
     async function fetchData() {
+    console.log("fetchData");
         try {
             if(factoryAdminContract != null && nftAdminContract != null) {
                 setDaysToNextWithdrawal(datediff(Date.now(), parseDate(getNextDay1())) + 1);
@@ -127,6 +137,7 @@ export default function Home (props) {
     async function handleRedeem(e) {        
         const tx = await factoryContract.redeem({ gasLimit: 500000 });
         const result = await tx.wait();
+        console.log("handleRedeem");
         fetchData();
     }
 
@@ -179,6 +190,7 @@ export default function Home (props) {
         } catch (error) {
             console.log(error);
         }
+        console.log("mintNFT");
         fetchData();
     }
 
