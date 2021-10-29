@@ -161,7 +161,7 @@ contract PlasmidsFactory is Ownable, ReentrancyGuard {
      */
     function pendingToRedeem(address _addr) public view returns(uint) {
         uint amount;
-        if (users[_addr].exists && users[_addr].userWeight > 0){
+        if (users[_addr].exists && users[_addr].userWeight > 0 && users[_addr].lastRedeemBlock < lastWithdrawBlock){
             amount = currentYield * users[_addr].userWeight / totalWeight;
         }
         return amount;

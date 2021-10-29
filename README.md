@@ -1,8 +1,12 @@
 # Plasmids - Rewarded NFTs Marketplace
 **Project Idea `Pablo Palomo (ppalomo.eth)`**
 
-Project URL: -----
+###
+
+Project URL: [https://plasmids.herokuapp.com](https://plasmids.herokuapp.com/)
+
 Author Address: 0x25f1Db85C33E4b3d3732d02371Dd13F7477F6185
+
 Screencast URL: -----
 
 ## Project Description:
@@ -29,9 +33,20 @@ User will mine assets of two types depending on how lucky they are:
 ## Contracts
 
 The contracts have been deployed to **Kovan Testnet** due to the fact that is the AAVE testnet.
-Plasmids (ERC-721): 0x887e0296bFdB8DB1B5bb4b855CbCc3F17b3Db3A0
-AaveStakingAdapter: 0xEAbB9d1245633D4d7C6360100F8ccE6075375258
-PlasmidsFactory: 0x306F9f156cf1CC54C2e5640f68580dC318e22df0
+
+1) **Plasmids (ERC-721)**: [0x5c3f7D44cB21BD93e7fcA3Fd2379D902d742BedC](https://kovan.etherscan.io/address/0x5c3f7D44cB21BD93e7fcA3Fd2379D902d742BedC#code)
+
+This is the ERC-721 contract wich stores the NFT assets themselves.
+
+2) **AaveStakingAdapter**: [0xdFC8EF2e2B50160CD3C61F9614887e4ce55F2257](https://kovan.etherscan.io/address/0xdFC8EF2e2B50160CD3C61F9614887e4ce55F2257#code)
+
+This is the contract used to communicate Plasmids Factory with the AAVE protocol. Here we can find the staking and withdraw methods besides another useful tools.
+
+3) **PlasmidsFactory**: [0xc5Cc3648109885E14363E6EA1f9B1eF10B28b9C5](https://kovan.etherscan.io/address/0xc5Cc3648109885E14363E6EA1f9B1eF10B28b9C5#code)
+
+This is the factory contract where the magic happens. Here we can find all the methods related to minting, redeeming, etc. This contract is linked with the ERC721 and the AAVE adapter.
+
+###
 
 ## Directory Structure:
 ???
@@ -45,9 +60,7 @@ REACT_APP_ETHERSCAN_API_KEY==?????
 REACT_APP_COINMARKETCAP_KEY==?????
 REACT_APP_PINATA_API_KEY==?????
 REACT_APP_PINATA_API_SECRET==?????
-
-REACT_APP_DEPLOYER_PRIVATE_KEY==?????
-
+REACT_APP_DEPLOYER_PRIVATE_KEY==???
 REACT_APP_PLASMIDS_KOVAN_ADDRESS=0x887e0296bFdB8DB1B5bb4b855CbCc3F17b3Db3A0
 REACT_APP_AAVESTAKINGADAPTER_KOVAN_ADDRESS=0xEAbB9d1245633D4d7C6360100F8ccE6075375258
 REACT_APP_PLASMIDSFACTORY_KOVAN_ADDRESS=0x306F9f156cf1CC54C2e5640f68580dC318e22df0
