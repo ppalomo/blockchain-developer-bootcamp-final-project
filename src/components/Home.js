@@ -427,9 +427,8 @@ export default function Home (props) {
                         w="500px" 
                         h="500px" 
                         bg="gray.100" 
-                        borderWidth="1px"
+                        borderWidth="0px"
                         borderColor={useColorModeValue("gray.200", "gray.700")}>
-                        {/* <Text fontSize="0.8rem" fontWeight="500" color="gray.400">MINT A NEW RANDOM NFT</Text> */}
 
                         <ChakraImage 
                             src={plasmid}
@@ -458,7 +457,8 @@ export default function Home (props) {
                         "xl": "2xl"
                     }}
                     fontWeight="bold">
-                    {Math.round(utils.formatEther(totalSentToCharity.toString()) * 1e8) / 1e8} ETH sent to charity until now
+                    {Math.round(utils.formatEther(totalSentToCharity.toString()) * 1e6) / 1e6} ETH sent to charity until now
+                    {/* Math.round(utils.formatEther(stakedAmount.toString()) * 1e3) / 1e3 */}
                 </Text>
             </Center>
 
@@ -469,7 +469,6 @@ export default function Home (props) {
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>Congrats!</ModalHeader>
-                    {/* <ModalCloseButton /> */}
                     <ModalBody>
                         {nftInfo[1] ?
                         <>
