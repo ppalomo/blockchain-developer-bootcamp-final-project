@@ -9,19 +9,22 @@ import {
     HStack,
     Input,
     Image as ChakraImage,
+    Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Lorem, ModalFooter,
     Progress,
     Skeleton, SkeletonCircle, SkeletonText,
     Stack,
     Text,
     VStack,
     Wrap, WrapItem,
-    useColorModeValue
+    useColorModeValue,
+    useDisclosure
 } from '@chakra-ui/react';
 import mergeImages from 'merge-images';
 import { images } from '../data/images';
 const IPFS = require('ipfs-api');
 
-export default function Home (props) {
+export default function Home (props) {    
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const { isWalletConnected, wallet, signer, setBalance } = useStore();
     const factoryContract = useContract("PlasmidsFactory");
     const factoryAdminContract = useAdminContract("PlasmidsFactory");
@@ -41,6 +44,7 @@ export default function Home (props) {
     const [yourNfts, setYourNfts] = useState(0);
     const [yourSpecialNfts, setYourSpecialNfts] = useState(0);
     const [yourWeight, setYourWeight] = useState(0);
+    const [nftInfo, setNftInfo] = useState(["",false,""]);
 
     useEffect(async () => {
         if (factoryAdminContract && !contractsLoaded)
@@ -51,9 +55,9 @@ export default function Home (props) {
     }, [factoryAdminContract]);
 
     useEffect(async () => {
-        console.log("oeeeeee")
         if (factoryAdminContract)
         {
+            onOpen();
             await fetchData();
         }
     }, [wallet]);
@@ -186,6 +190,25 @@ export default function Home (props) {
             if(factoryContract) {
                 const tx = await factoryContract.mintNFT(imageURI, metadataURI, {value: mintingPrice.toString(), gasLimit: 1000000 });
                 const result = await tx.wait();
+                console.log(result);
+
+                // uint newId, 
+                // address indexed owner, 
+                // string imageURI, 
+                // string metadataURI, 
+                // string dna, 
+                // bool isSpecial, 
+                // uint weight
+                setNftInfo([
+                    result.events[1].args[0].toString(),
+                    result.events[1].args[5],
+                    result.events[1].args[6].toString()
+                ]);
+                console.log("id = ", result.events[1].args[0].toString());
+                console.log("isSpecial = ", result.events[1].args[5].toString());
+                console.log("weight = ", result.events[1].args[6].toString());
+
+                onOpen();
             }
         } catch (error) {
             console.log(error);
@@ -208,6 +231,7 @@ export default function Home (props) {
     }
     
     return(
+        <>
         <VStack>
 
             <Center
@@ -448,6 +472,35 @@ export default function Home (props) {
             </Center>
 
         </VStack>
+
+        <Center>
+            <Modal isOpen={isOpen} onClose={onClose} isCentered={true}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Congrats!</ModalHeader>
+                    {/* <ModalCloseButton /> */}
+                    <ModalBody>
+                        {nftInfo[1] ?
+                        <>
+                            Woohoo! You have minted an special NFT! (Weight: {nftInfo[2]})
+                        </>
+                        :
+                        <>
+                        Your standard NFT has been minted!
+                        </>
+                        }
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button colorScheme="blue" mr={3} onClick={onClose}>
+                        Close
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+        </Center>
+
+        </>
     );
 
 }
