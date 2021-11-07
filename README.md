@@ -143,6 +143,7 @@ $ npx hardhat test --network localhost
 - Create method to add new Plasmid characteristics.
 - Create method to force withdraw all amount staked in Aave.
 - Only store NFTs info in the ERC721 contract to avoid inconsistencies.
+- Avoid 2 different transactions to generate DNA and mint the NFT. This is a problem because the user can reject the second tx if he doesn't like the generated image.
 
 ## Ideas for the future
 

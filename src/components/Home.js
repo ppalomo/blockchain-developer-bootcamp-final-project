@@ -417,7 +417,7 @@ export default function Home (props) {
 
                         <ChakraImage 
                             src={plasmid}
-                            fallbackSrc="https://via.placeholder.com/500"
+                            fallbackSrc="https://ipfs.io/ipfs/QmXUdRBhkNaYTw4Sii1LgKpeJ7iC9p7RrZQGJ5MRwumobp"
                             boxSize="500px" />
 
                         <canvas id="canvas" className="hidden"></canvas>
