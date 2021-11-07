@@ -51,11 +51,12 @@ export default function Home (props) {
     }, [factoryAdminContract]);
 
     useEffect(async () => {
+        console.log("oeeeeee")
         if (factoryAdminContract)
         {
             await fetchData();
         }
-    }, [isWalletConnected]);
+    }, [wallet]);
 
     useEffect(async () => {
         if (plasmid)
