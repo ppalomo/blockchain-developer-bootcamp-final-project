@@ -57,7 +57,6 @@ export default function Home (props) {
     useEffect(async () => {
         if (factoryAdminContract)
         {
-            onOpen();
             await fetchData();
         }
     }, [wallet]);
@@ -190,15 +189,7 @@ export default function Home (props) {
             if(factoryContract) {
                 const tx = await factoryContract.mintNFT(imageURI, metadataURI, {value: mintingPrice.toString(), gasLimit: 1000000 });
                 const result = await tx.wait();
-                console.log(result);
 
-                // uint newId, 
-                // address indexed owner, 
-                // string imageURI, 
-                // string metadataURI, 
-                // string dna, 
-                // bool isSpecial, 
-                // uint weight
                 setNftInfo([
                     result.events[1].args[0].toString(),
                     result.events[1].args[5],
@@ -482,11 +473,11 @@ export default function Home (props) {
                     <ModalBody>
                         {nftInfo[1] ?
                         <>
-                            Woohoo! You have minted an special NFT! (Weight: {nftInfo[2]})
+                        <Text fontSize="lg">Woohoo! You have minted an special NFT! (Id: {nftInfo[0]}, Weight: {nftInfo[2]})</Text>
                         </>
                         :
                         <>
-                        Your standard NFT has been minted!
+                        <Text fontSize="lg">Your standard NFT has been minted! (Id: {nftInfo[0]})</Text>
                         </>
                         }
                     </ModalBody>
