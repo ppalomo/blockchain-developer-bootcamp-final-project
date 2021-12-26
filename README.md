@@ -1,14 +1,12 @@
 # Plasmids - Rewarded NFTs Marketplace
 
-**Project Idea `Pablo Palomo (ppalomo.eth)`**
+**Project Idea `Pablo Palomo`**
 
 ###
 
 Project URL: [https://plasmids.herokuapp.com](https://plasmids.herokuapp.com/)
 
 (Keep in mind that the Heroku account is free and the first page load is very slow)
-
-Author Address: 0x25f1Db85C33E4b3d3732d02371Dd13F7477F6185
 
 Screencast URL: [https://youtu.be/7DHAxeXP-VY](https://youtu.be/7DHAxeXP-VY)
 
